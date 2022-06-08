@@ -25,11 +25,14 @@ app.set("view engine", "ejs");
 // het maken van een database variabele zodat ik die overal kan opvragen.
 let db;
 
+app.get('/', (req, res) => {
+  res.send("Hallo")
+})
 
-app.get('/', async (req, res) => {
-  const options = { sort: { name: 1 } };
-  const users = await db.collection("users").find({}, options).toArray();
-  res.render('index.ejs', { users })
+app.get('/user/:name', async (req, res) => {
+  const query = { name: req.params.name };
+  const user = await db.collection("users").findOne(query);
+  res.render('index.ejs', { user })
 })
 
 async function connectDB() {
@@ -50,6 +53,7 @@ async function connectDB() {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 
+  
   console.log(process.env.TESTVAR);
   connectDB().then(console.log("we have a connection to mongo"));
 })

@@ -8,10 +8,10 @@
 </head>
 <body>
  
-  <% user.forEach(function(user){ %>
-    <section>
-        <h2><%= user.name %></h2>
-        <h3><%= user.age %></h3>
-    } <%
+  
+      % users.forEach( user =>{ %>
+            <h1> Hello <%= user.name %></h1>
+            <h2> Hello <%= user.age %></h2>
+           <% } %>
 </body>
 </html>

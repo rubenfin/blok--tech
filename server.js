@@ -29,10 +29,25 @@ app.get('/', (req, res) => {
   res.send("Hallo")
 })
 
-app.get('/user/:name', async (req, res) => {
-  const query = { name: req.params.name };
-  const user = await db.collection("users").findOne(query);
-  res.render('index.ejs', { user })
+app.get('/users', async (req, res) => {
+  const options = { sort: { name: 1 } };
+  const users = await db.collection("users").find({}, options).toArray();
+  // RENDER PAGE
+  const title = users.length == 0 ? "No movies were found" : "Movies";
+  res.render('index.ejs', { users })
+})
+
+app.get('/users/:userId', (req, res) => {
+  res.redirect('/users/:userId/:name')
+})
+
+
+app.get('/users/:userId/:name', async (req, res) => {
+  const query = { _id: ObjectId(req.params.userId) };
+  const users = await db.collection("users").findOne(query);
+  // RENDER PAGE
+  const title = users.length == 0 ? "No movies were found" : "Movies";
+  res.render('index.ejs', { users })
 })
 
 async function connectDB() {
@@ -51,7 +66,7 @@ async function connectDB() {
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Example app listening on port ${port}`);
 
   
   console.log(process.env.TESTVAR);

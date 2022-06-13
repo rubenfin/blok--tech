@@ -5,17 +5,18 @@ const port = 3000
 
 //package voor het gebruiken van .env
 const dotenv = require("dotenv").config();
+const path = require('path');
 
 // packages die je nodig hebt voor het gebruiken van een database, mongodb.
 const { MongoClient } = require("mongodb");
 const { ObjectId } = require("mongodb");
-const { resourceUsage } = require('process');
+
 
 // middleware
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(express.static(path.join(__dirname, "static")))
 
 // de template engine die ik gebruik, ejs.
 app.set("view engine", "ejs");
@@ -34,20 +35,22 @@ app.get('/users', async (req, res) => {
   const users = await db.collection("users").find({}, options).toArray();
   // RENDER PAGE
   const title = users.length == 0 ? "No movies were found" : "Movies";
-  res.render('index.ejs', { users })
+  res.render('users.ejs', { users })
 })
 
+/* work in progress.
 app.get('/users/:userId', (req, res) => {
   res.redirect('/users/:userId/:name')
-})
+}) */
 
 
 app.get('/users/:userId/:name', async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const users = await db.collection("users").findOne(query);
   // RENDER PAGE
-  const title = users.length == 0 ? "No movies were found" : "Movies";
-  res.render('index.ejs', { users })
+  const title = users.length == 0 ? "No users were found" : "Users";
+
+  res.render('userprofile.ejs', { users })
 })
 
 async function connectDB() {

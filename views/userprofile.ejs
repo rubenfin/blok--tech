@@ -5,25 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/styles/styles.css" rel="stylesheet" />
-    <title>Document</title>
+    <title>My profile - <%= user.name %></title>
   </head>
   <body>
     <div class="body--class">
     <div class="user"></div>
       <h1>My profile</h1>
       <button class="btn--edit">Edit</button>
-      <h2>Roshnie de Groen</h2>
+      <h2><%= user.name %></h2>
       <p>Member since: 23-04-2022</p>
     </div>
   
     <div class="account">
       <h3>Account</h3>
       <h4>Username</h4>
-      <h5>Chicken</h5>
+      <h5><%= user.username %></h5>
       <h4>Email</h4>
-      <h5>Roshnie@degroen.com</h5>
+      <h5><%= user.email %></h5>
       <h4>Phone number</h4>
-      <h5>+316 123 123 12</h5>
+      <h5><%= user.phone %></h5>
     </div>
 
     <div class="password">
@@ -34,11 +34,11 @@
     <div class="information">
       <h3>Personal information</h3>
       <h4>Country</h4>
-      <h5>The Netherlands</h5>
+      <h5><%= user.country %></h5>
       <h4>City</h4>
-      <h5>Purmerend</h5>
+      <h5><%= user.city %></h5>
       <h4>Date of Birth</h4>
-      <h5>14-04-1998</h5>
+      <h5><%= user.dob %></h5>
     </div>
     
   </div> 

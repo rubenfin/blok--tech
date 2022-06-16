@@ -8,23 +8,31 @@
     <title>My profile - <%= user.name %></title>
   </head>
   <body>
+ 
+
+
+ 
+
+
     <div class="body--class">
     <div class="user"></div>
       <h1>My profile</h1>
-      <a href="/edit">Edit</a>
+      <button class="btn--edit">Edit</button>
       <h2><%= user.name %></h2>
       <p>Member since: 23-04-2022</p>
     </div>
   
+<form id="form" action="/users/:userId/:username/edit" method="POST">
     <div class="account">
       <h3>Account</h3>
       <h4>Username</h4>
-      <h5><%= user.username %></h5>
+      <h5><input value="<%= user.username %>" type="text" id="username" name="username"></h5>
       <h4>Email</h4>
-      <h5><%= user.email %></h5>
+      <h5><input value="<%= user.email %>" type="email" id="email" name="email"></h5>
       <h4>Phone number</h4>
-      <h5><%= user.phone %></h5>
+      <h5><input value="<%= user.phone %>" type="number" id="phone" name="phone"></h5>
     </div>
+ 
 
     <div class="password">
       <h3>Password</h3>
@@ -34,13 +42,14 @@
     <div class="information">
       <h3>Personal information</h3>
       <h4>Country</h4>
-      <h5><%= user.country %></h5>
+      <h5><input value="<%= user.country %>" type="text" id="country" name="country"></h5>
       <h4>City</h4>
-      <h5><%= user.city %></h5>
+      <h5><input value="<%= user.city %>" type="text" id="city" name="city"></h5>
       <h4>Date of Birth</h4>
-      <h5><%= user.dob %></h5>
+      <h5><input value="<%= user.dob %>" type="date" id="dob" name="dob"></h5>
     </div>
-    
+  <input type="submit" value="Submit">
+</form>    
   </div> 
   </body>
 </html>

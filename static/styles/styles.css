@@ -162,3 +162,7 @@ h5:nth-of-type(3) {
   left: 200px;
   top: 480px;
 }
+
+button{
+  cursor: pointer;
+}

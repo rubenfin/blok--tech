@@ -1,21 +1,25 @@
 // express en port voor het starten van een server
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
 //package voor het gebruiken van .env
 const dotenv = require("dotenv").config();
-const path = require("path");
 
 // packages die je nodig hebt voor het gebruiken van een database, mongodb.
 const { MongoClient } = require("mongodb");
 const { ObjectId } = require("mongodb");
 
 // middleware
+const path = require("path");
+const { response } = require("express");
+
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "static")));
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // de template engine die ik gebruik, ejs.
 app.set("view engine", "ejs");
@@ -30,8 +34,6 @@ app.get("/", (req, res) => {
 app.get("/users", async (req, res) => {
   const options = { sort: { name: 1 } };
   const users = await db.collection("users").find({}, options).toArray();
-  // RENDER PAGE
-  const title = users.length == 0 ? "No movies were found" : "Movies";
   res.render("users.ejs", { users });
 });
 
@@ -40,13 +42,48 @@ app.get('/users/:userId', (req, res) => {
   res.redirect('/users/:userId/:name')
 }) */
 
-app.get("/users/:userId/:name", async (req, res) => {
+app.get("/users/:userId/:username", async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const user = await db.collection("users").findOne(query);
 
   console.log(user);
   res.render("userprofile.ejs", { user });
 });
+
+app.get("/users/:userId/:username/edit", async (req, res) => {
+  const query = { _id: ObjectId(req.params.userId) };
+  const user = await db.collection("users").findOne(query);
+
+  console.log(user);
+  res.render("edituserprofile.ejs", { user });
+});
+
+app.post(
+  "/users/:userId/:username/edit",
+  urlencodedParser,
+  async (req, res) => {
+
+    console.log("edit");
+    console.log(req.body);
+    const user = await db.collection("users").updateOne(
+      {
+        _id: ObjectId(req.body.update),
+      },
+      {
+        name: req.body.name,
+        country: req.body.country,
+        city: req.body.city,
+        phone: req.body.phone,
+        dob: req.body.dob,
+        email: req.body.email,
+        username: req.body.username,
+      }
+    );
+    
+  
+    res.render("userprofile.ejs", { user });
+  }
+);
 
 app.use("", (req, res, next) => {
   res.status(404).send("Page not found");

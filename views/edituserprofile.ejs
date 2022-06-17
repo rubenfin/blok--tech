@@ -22,7 +22,8 @@
       <p>Member since: 23-04-2022</p>
     </div>
   
-<form id="form" action="/users/:userId/:username/edit" method="POST">
+<form id="form" action="" method="POST">
+  <input type="hidden" value="<%= user._id %>" name="userId">
     <div class="account">
       <h3>Account</h3>
       <h4>Username</h4>

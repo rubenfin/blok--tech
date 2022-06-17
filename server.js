@@ -37,16 +37,11 @@ app.get("/users", async (req, res) => {
   res.render("users.ejs", { users });
 });
 
-/* work in progress.
-app.get('/users/:userId', (req, res) => {
-  res.redirect('/users/:userId/:name')
-}) */
-
 app.get("/users/:userId/:username", async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const user = await db.collection("users").findOne(query);
 
-  console.log(user);
+  console.log(" get /users/:userId/:username ", user);
   res.render("userprofile.ejs", { user });
 });
 
@@ -54,22 +49,27 @@ app.get("/users/:userId/:username/edit", async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const user = await db.collection("users").findOne(query);
 
-  console.log(user);
+  console.log(
+    " get /users/:userId/:username/edit req.params.userId ",
+    req.params.userId
+  );
+  console.log(" get /users/:userId/:username/edit query ", query);
+  console.log(" get /users/:userId/:username/edit user", user);
   res.render("edituserprofile.ejs", { user });
 });
 
-app.post(
-  "/users/:userId/:username/edit",
-  urlencodedParser,
-  async (req, res) => {
+app.post("/users/:userId/:username/edit", async (req, res) => {
+  console.log(
+    " post /users/:userId/:username/edit req.params.userId",
+    req.params.userId
+  );
 
-    console.log("edit");
-    console.log(req.body);
-    const user = await db.collection("users").updateOne(
-      {
-        _id: ObjectId(req.body.update),
-      },
-      {
+  console.log(req.body);
+  const user = await db.collection("users").updateOne(
+    { _id: ObjectId(req.body.userId) },
+    {
+      $set: {
+        _id: ObjectId(req.body.userId),
         name: req.body.name,
         country: req.body.country,
         city: req.body.city,
@@ -77,13 +77,13 @@ app.post(
         dob: req.body.dob,
         email: req.body.email,
         username: req.body.username,
-      }
-    );
-    
-  
-    res.render("userprofile.ejs", { user });
-  }
-);
+      },
+    }
+  );
+
+  console.log(" post /users/:userId/:username/edit user", user);
+  res.render("userprofile.ejs", { user: req.body });
+});
 
 app.use("", (req, res, next) => {
   res.status(404).send("Page not found");

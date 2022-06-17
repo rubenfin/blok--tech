@@ -70,7 +70,6 @@ app.post("/users/:userId/:username/edit", async (req, res) => {
     {
       $set: {
         _id: ObjectId(req.body.userId),
-        name: req.body.name,
         country: req.body.country,
         city: req.body.city,
         phone: req.body.phone,

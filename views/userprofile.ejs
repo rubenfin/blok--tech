@@ -9,9 +9,12 @@
   </head>
   <body>
     <div class="body--class">
+      <a class="btn--back" href="/users">
+        <img alt="back-arrow" src="/images/back-arrow.png" width="20px" height="20px">
+        </a>
     <div class="user"></div>
       <h1>My profile</h1>
-      <a href="/users/<%= user._id %>/<%= user.name %>/edit">Edit</a>
+      <a class="btn--edit" href="/users/<%= user._id %>/edit">Edit</a>
       <h2><%= user.name %></h2>
       <p>Member since: 23-04-2022</p>
     </div>

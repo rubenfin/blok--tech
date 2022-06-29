@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/styles/users.css" rel="stylesheet" />
   <title>Document</title>
 </head>
 <body>
   <% for (var users of users) {%>
-    <div class="player--card">
+    <ul>
+      <h2>name</h2>
       <li class="name"><%= users.name %></li>
       <h2>phone</h2>
       <li><%= users.phone %></li>
@@ -16,11 +18,10 @@
       <li><%= users.country %></li>
       <h2>city</h2>
       <li><%= users.city %></li>
+      <a href="/users/<%= users._id %>">more</a>
+    </ul>
     </div>
 
     <% } %>
-
-  
- 
 </body>
 </html>

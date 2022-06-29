@@ -1,9 +1,10 @@
 // express en port voor het starten van een server
 const express = require("express");
-const bodyParser = require("body-parser");
+
 const app = express();
 const port = 3000;
-
+const helmet = require("helmet");
+const bodyParser = require("body-parser");
 //package voor het gebruiken van .env
 const dotenv = require("dotenv").config();
 
@@ -13,7 +14,12 @@ const { ObjectId } = require("mongodb");
 
 // middleware
 const path = require("path");
-const { response } = require("express");
+const { response, query } = require("express");
+
+
+//helmet
+app.use(helmet());
+
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -37,7 +43,7 @@ app.get("/users", async (req, res) => {
   res.render("users.ejs", { users });
 });
 
-app.get("/users/:userId/:username", async (req, res) => {
+app.get("/users/:userId/", async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const user = await db.collection("users").findOne(query);
 
@@ -45,7 +51,7 @@ app.get("/users/:userId/:username", async (req, res) => {
   res.render("userprofile.ejs", { user });
 });
 
-app.get("/users/:userId/:username/edit", async (req, res) => {
+app.get("/users/:userId/edit", async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const user = await db.collection("users").findOne(query);
 
@@ -58,7 +64,7 @@ app.get("/users/:userId/:username/edit", async (req, res) => {
   res.render("edituserprofile.ejs", { user });
 });
 
-app.post("/users/:userId/:username/edit", async (req, res) => {
+app.post("/users/:userId/edit", async (req, res) => {
   console.log(
     " post /users/:userId/:username/edit req.params.userId",
     req.params.userId
@@ -76,13 +82,16 @@ app.post("/users/:userId/:username/edit", async (req, res) => {
         dob: req.body.dob,
         email: req.body.email,
         username: req.body.username,
+        name: req.body.name,
       },
     }
   );
 
+  console.log(user.name)
   console.log(" post /users/:userId/:username/edit user", user);
   res.render("userprofile.ejs", { user: req.body });
 });
+
 
 app.use("", (req, res, next) => {
   res.status(404).send("Page not found");

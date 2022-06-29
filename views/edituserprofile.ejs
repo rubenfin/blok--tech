@@ -8,21 +8,14 @@
     <title>My profile - <%= user.name %></title>
   </head>
   <body>
- 
-
-
- 
-
-
+ <form id="form" action="" method="POST">
     <div class="body--class">
     <div class="user"></div>
       <h1>My profile</h1>
-      <button class="btn--edit">Edit</button>
-      <h2><%= user.name %></h2>
+      <h2><input value="<%= user.name %>" type="text" id="name" name="name"></h2>
       <p>Member since: 23-04-2022</p>
     </div>
   
-<form id="form" action="" method="POST">
   <input type="hidden" value="<%= user._id %>" name="userId">
     <div class="account">
       <h3>Account</h3>
@@ -49,7 +42,7 @@
       <h4>Date of Birth</h4>
       <h5><input value="<%= user.dob %>" type="date" id="dob" name="dob"></h5>
     </div>
-  <input type="submit" value="Submit">
+  <input class="btn--submit" type="submit" value="Submit">
 </form>    
   </div> 
   </body>

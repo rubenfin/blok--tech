@@ -1,10 +1,9 @@
 // express en port voor het starten van een server
 const express = require("express");
-
 const app = express();
 const port = 3000;
 const helmet = require("helmet");
-const bodyParser = require("body-parser");
+
 //package voor het gebruiken van .env
 const dotenv = require("dotenv").config();
 
@@ -14,8 +13,6 @@ const { ObjectId } = require("mongodb");
 
 // middleware
 const path = require("path");
-const { response, query } = require("express");
-
 
 //helmet
 app.use(helmet());
@@ -25,7 +22,6 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "static")));
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // de template engine die ik gebruik, ejs.
 app.set("view engine", "ejs");
@@ -46,8 +42,6 @@ app.get("/users", async (req, res) => {
 app.get("/users/:userId/", async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const user = await db.collection("users").findOne(query);
-
-  console.log(" get /users/:userId/:username ", user);
   res.render("userprofile.ejs", { user });
 });
 
@@ -55,22 +49,10 @@ app.get("/users/:userId/edit", async (req, res) => {
   const query = { _id: ObjectId(req.params.userId) };
   const user = await db.collection("users").findOne(query);
 
-  console.log(
-    " get /users/:userId/:username/edit req.params.userId ",
-    req.params.userId
-  );
-  console.log(" get /users/:userId/:username/edit query ", query);
-  console.log(" get /users/:userId/:username/edit user", user);
   res.render("edituserprofile.ejs", { user });
 });
 
 app.post("/users/:userId/edit", async (req, res) => {
-  console.log(
-    " post /users/:userId/:username/edit req.params.userId",
-    req.params.userId
-  );
-
-  console.log(req.body);
   const user = await db.collection("users").updateOne(
     { _id: ObjectId(req.body.userId) },
     {
@@ -86,9 +68,6 @@ app.post("/users/:userId/edit", async (req, res) => {
       },
     }
   );
-
-  console.log(user.name)
-  console.log(" post /users/:userId/:username/edit user", user);
   res.render("userprofile.ejs", { user: req.body });
 });
 

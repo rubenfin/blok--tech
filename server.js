@@ -17,7 +17,7 @@ const path = require("path");
 //helmet
 app.use(helmet());
 
-
+// zorgt ervoor dat de ejs files werken en dat er wordt gewerkt met json data
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,6 +29,7 @@ app.set("view engine", "ejs");
 // het maken van een database variabele zodat ik die overal kan opvragen.
 let db;
 
+// startpagina
 app.get("/", (req, res) => {
   res.send("Hallo");
 });
@@ -71,11 +72,12 @@ app.post("/users/:userId/edit", async (req, res) => {
   res.render("userprofile.ejs", { user: req.body });
 });
 
-
+// error 404 pagina, wanneer je naar een link gaat die niet bestaat
 app.use("", (req, res, next) => {
   res.status(404).send("Page not found");
 });
 
+// verbinding maken met de database
 async function connectDB() {
   const uri = process.env.DB_URI;
   const client = new MongoClient(uri, {
@@ -90,6 +92,7 @@ async function connectDB() {
   }
 }
 
+// starten van de database
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 
